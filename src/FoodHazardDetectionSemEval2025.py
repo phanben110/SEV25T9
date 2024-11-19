@@ -79,14 +79,6 @@ class FoodHazardDetectionSemEval2025:
             batch_size=self.config["batch_size"],
         )
 
-    # def initialize_model(self):
-    #     self.model = BertSentimentClassifier(
-    #         self.config["bert_model_name"], self.num_classes
-    #     ).to(self.device)
-    #     self.optimizer = torch.optim.Adam(
-    #         self.model.parameters(), lr=self.config["learning_rate"]
-    #     )
-    #     self.criterion = nn.CrossEntropyLoss()
     def initialize_model(self):
         self.model = BertSentimentClassifier(
             self.config["bert_model_name"], self.num_classes
@@ -95,9 +87,17 @@ class FoodHazardDetectionSemEval2025:
             self.model.parameters(), lr=self.config["learning_rate"]
         )
         self.criterion = nn.CrossEntropyLoss()
+    # def initialize_model(self):
+    #     self.model = BertSentimentClassifier(
+    #         self.config["bert_model_name"], self.num_classes
+    #     ).to(self.device)
+    #     self.optimizer = torch.optim.Adam(
+    #         self.model.parameters(), lr=self.config["learning_rate"]
+    #     )
+    #     self.criterion = nn.CrossEntropyLoss()
         
-        # Add learning rate scheduler
-        self.scheduler = StepLR(self.optimizer, step_size=5, gamma=0.1)
+    #     # Add learning rate scheduler
+    #     self.scheduler = StepLR(self.optimizer, step_size=20, gamma=0.1)
 
 
     def train_and_evaluate(self):
@@ -146,8 +146,8 @@ class FoodHazardDetectionSemEval2025:
                     best_epoch = epoch + 1
                     torch.save(self.model.state_dict(), self.best_model_path)
 
-                # Step the scheduler
-                self.scheduler.step()
+                # # Step the scheduler
+                # self.scheduler.step()
 
                 # Time tracking
                 elapsed_time = datetime.now() - start_time
