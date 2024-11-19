@@ -3,8 +3,8 @@ common:  # Các biến dùng chung cho tất cả subtasks và mô hình
   # bert_model_name: "alvaroalon2/biobert_diseases_ner"
   bert_model_name: microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract
   max_len: 100
-  batch_size: 300
-  epochs: 2
+  batch_size: 330
+  epochs: 10
   learning_rate: 0.00002
   test_size: 0.2
   random_state: 2024
