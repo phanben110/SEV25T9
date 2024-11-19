@@ -142,3 +142,49 @@ def calculate_metrics(predictions, labels):
     recall = recall_score(labels, predictions, average='weighted')
 
     return f1, precision, recall
+
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+def stratified_split(csv_path, stratify_column, test_size=0.2, random_state=2024, debug=False):
+    """
+    Split data into training and development sets using stratified splitting.
+    
+    Parameters:
+    - csv_path (str): Path to the CSV file.
+    - stratify_column (str): Column name to use for stratification.
+    - test_size (float): Proportion of data to use for the development set (default = 0.2).
+    - random_state (int): Seed for random number generator to ensure reproducibility (default = 2024).
+    
+    Returns:
+    - train_df (pd.DataFrame): Training set.
+    - dev_df (pd.DataFrame): Development set.
+    """
+    # Read data from CSV file
+    data = pd.read_csv(csv_path, index_col=0)
+    
+    # Check if the stratify column exists
+    if stratify_column not in data.columns:
+        raise ValueError(f"Column '{stratify_column}' does not exist in the dataset")
+
+    if debug: 
+        # Check distribution of the classes
+        print(f"Number of unique classes: {len(data[stratify_column].value_counts())}")
+    
+    # Perform stratified split
+    train_df, dev_df = train_test_split(
+        data, 
+        test_size=test_size, 
+        random_state=random_state, 
+        stratify=data[stratify_column]
+    )
+    
+    if debug:
+        # Display class distribution in the split sets
+        print("\nClass distribution in the training set:")
+        print(train_df[stratify_column].value_counts())
+        
+        print("\nClass distribution in the development set:")
+        print(dev_df[stratify_column].value_counts())
+    
+    return train_df, dev_df

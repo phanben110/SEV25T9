@@ -32,12 +32,22 @@ class MyDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        sentence = self.data.iloc[index]['Full Sentence']
-        e1 = self.data.iloc[index]['entity e1']
-        e2 = self.data.iloc[index]['entity e2']
-        pair_type = self.data.iloc[index]['pair type']
-#         input_text = f"{e1} [SEP] {e2}"
-        input_text = f"{sentence} [SEP] {e1} [SEP] {e2}"
+        # year,month,day,country,title,text
+
+        year = self.data.iloc[index]['year']
+        month = self.data.iloc[index]['month']
+        day = self.data.iloc[index]['day']
+        country = self.data.iloc[index]['country']
+        title = self.data.iloc[index]['title']
+        text = self.data.iloc[index]['title']
+        label = self.data.iloc[index]['label']
+
+        # Tạo input_text rõ ràng và ngữ nghĩa
+        input_text = (
+            f"On {year}-{month:02d}-{day:02d}, in {country}, an event titled '{title}' was reported. "
+            f"Here is the full context: {text} [SEP]"
+        )
+        # print(input_text)
 
         encoding = self.tokenizer.encode_plus(
             input_text,
@@ -54,5 +64,5 @@ class MyDataset(Dataset):
             'text': input_text,
             'input_ids': encoding['input_ids'].flatten(),
             'attention_mask': encoding['attention_mask'].flatten(),
-            'labels': torch.tensor(pair_type, dtype=torch.long)
+            'labels': torch.tensor(label, dtype=torch.long)
         }
