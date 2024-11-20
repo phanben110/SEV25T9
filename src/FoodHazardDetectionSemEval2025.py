@@ -18,6 +18,8 @@ from sklearn.preprocessing import LabelEncoder
 import pandas as pd
 from tqdm import tqdm
 import numpy as np
+import torch
+from transformers import BertTokenizer, BertForSequenceClassification, AdamW, get_scheduler, DataCollatorWithPadding
 
 warnings.filterwarnings("ignore")
 
@@ -100,6 +102,15 @@ class FoodHazardDetectionSemEval2025:
             self.model.parameters(), lr=self.config["learning_rate"]
         )
         self.criterion = nn.CrossEntropyLoss()
+
+        num_training_steps = self.config["epochs"] * len(self.train_loader)
+
+        self.lr_scheduler = get_scheduler(
+            name="linear",
+            optimizer=self.optimizer,
+            num_warmup_steps=0,
+            num_training_steps=num_training_steps,
+        )
     # def initialize_model(self):
     #     self.model = BertSentimentClassifier(
     #         self.config["bert_model_name"], self.num_classes
@@ -126,7 +137,7 @@ class FoodHazardDetectionSemEval2025:
 
                 # Training
                 train_loss, train_precision, train_recall, train_f1 = train(
-                    self.model, self.train_loader, self.optimizer, self.criterion, self.device
+                    self.model, self.train_loader, self.optimizer, self.criterion, self.device,  self.lr_scheduler
                 )
                 train_losses.append(train_loss)
 

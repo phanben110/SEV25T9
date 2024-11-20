@@ -31,7 +31,7 @@ def focal_loss(outputs, labels, gamma=2.0, alpha=1.0):
     focal_loss = (alpha * (1 - pt) ** gamma * ce_loss).mean()
     return focal_loss
 
-def train(model, data_loader, optimizer, criterion, device):
+def train(model, data_loader, optimizer, criterion, device, lr_scheduler):
     # set the model to train mode
     model.train()
 
@@ -69,6 +69,7 @@ def train(model, data_loader, optimizer, criterion, device):
 
         # perform backpropagation and optimization
         loss.backward()
+        lr_scheduler.step()
         optimizer.step()
 
     # calculate the average loss, accuracy, precision, recall, and f1 score

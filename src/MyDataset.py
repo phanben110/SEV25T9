@@ -46,10 +46,13 @@ class MyDataset(Dataset):
             label = self.data.iloc[index]['label']
 
         # Tạo input_text rõ ràng và ngữ nghĩa
-        input_text = (
-            f"On {year}-{month:02d}-{day:02d}, in {country}, an event titled '{title}' was reported. "
-            f"Here is the full context: {text} [SEP]"
-        )
+        # input_text = (
+        #     f"On {year}-{month:02d}-{day:02d}, in {country}, an event titled '{title}' was reported. "
+        #     f"Here is the full context: {text} [SEP]"
+        # )
+        # input_text = f"On {year}-{month:02d}-{day:02d}, '{title}' occurred in {country}. Context: {text}"
+        input_text = f"In {year}, '{title}' happened in {country}. Context: {text} [SEP]"
+
         # print(input_text)
 
         encoding = self.tokenizer.encode_plus(
