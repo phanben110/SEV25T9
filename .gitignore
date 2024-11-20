@@ -5,3 +5,4 @@ wandb/
 *.zip
 logs/
 models/
+submission/

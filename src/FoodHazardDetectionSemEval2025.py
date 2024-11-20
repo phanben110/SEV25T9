@@ -74,7 +74,12 @@ class FoodHazardDetectionSemEval2025:
         self.num_classes = len(label_encoder.classes_) 
         print("Number of class:",label_encoder.classes_)
 
-        np.save(f"{self.config["out_model_path"]}/{self.config["label_column"]}_label_encoder.npy", label_encoder.classes_) 
+        label_path = os.path.join(
+            self.config["out_model_path"],
+            f"{self.config['label_column']}_label_encoder.npy"
+        )
+
+        np.save(label_path, label_encoder.classes_) 
 
         # Create datasets and data loaders
         self.train_loader = DataLoader(
