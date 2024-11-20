@@ -23,10 +23,12 @@ import torch.nn as nn
 from tqdm import tqdm
 # Tokenize and encode the sentences
 class MyDataset(Dataset):
-    def __init__(self, df, tokenizer, max_len):
+    def __init__(self, df, tokenizer, max_len, inference=False):
         self.data = df
         self.tokenizer = tokenizer
         self.max_len = max_len
+        self.inference = inference
+
 
     def __len__(self):
         return len(self.data)
@@ -40,7 +42,8 @@ class MyDataset(Dataset):
         country = self.data.iloc[index]['country']
         title = self.data.iloc[index]['title']
         text = self.data.iloc[index]['title']
-        label = self.data.iloc[index]['label']
+        if self.inference == False:         
+            label = self.data.iloc[index]['label']
 
         # Tạo input_text rõ ràng và ngữ nghĩa
         input_text = (
@@ -59,10 +62,16 @@ class MyDataset(Dataset):
             return_attention_mask=True,
             return_tensors='pt',
         )
-
-        return {
-            'text': input_text,
-            'input_ids': encoding['input_ids'].flatten(),
-            'attention_mask': encoding['attention_mask'].flatten(),
-            'labels': torch.tensor(label, dtype=torch.long)
-        }
+        if self.inference == False:   
+            return {
+                'text': input_text,
+                'input_ids': encoding['input_ids'].flatten(),
+                'attention_mask': encoding['attention_mask'].flatten(),
+                'labels': torch.tensor(label, dtype=torch.long)
+            }
+        else: 
+            return {
+                'text': input_text,
+                'input_ids': encoding['input_ids'].flatten(),
+                'attention_mask': encoding['attention_mask'].flatten()
+            }
