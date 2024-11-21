@@ -41,7 +41,7 @@ class MyDataset(Dataset):
         day = self.data.iloc[index]['day']
         country = self.data.iloc[index]['country']
         title = self.data.iloc[index]['title']
-        text = self.data.iloc[index]['title']
+        text = self.data.iloc[index]['text']
         if self.inference == False:         
             label = self.data.iloc[index]['label']
 
@@ -50,8 +50,9 @@ class MyDataset(Dataset):
         #     f"On {year}-{month:02d}-{day:02d}, in {country}, an event titled '{title}' was reported. "
         #     f"Here is the full context: {text} [SEP]"
         # )
-        # input_text = f"On {year}-{month:02d}-{day:02d}, '{title}' occurred in {country}. Context: {text}"
-        input_text = f"In {year}, '{title}' happened in {country}. Context: {text} [SEP]"
+        input_text = f"On {year}-{month:02d}-{day:02d}, '{title}' occurred in {country}. Context: {text}"
+        #input_text = f"In {year}, '{title}' happened in {country}. Context: {text} [SEP]"
+        # input_text = f"{year}[SEP] {title} [SEP] {text} [SEP]"
 
         # print(input_text)
 

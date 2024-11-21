@@ -3,10 +3,10 @@ common:  # Các biến dùng chung cho tất cả subtasks và mô hình
   # bert_model_name: "alvaroalon2/biobert_diseases_ner"
   # bert_model_name: microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract
   bert_model_name: microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract
-  max_len: 250
-  # batch_size: 51
-  batch_size: 39
-  epochs: 200
+  max_len: 300
+  batch_size: 31
+  # batch_size: 70
+  epochs: 100
   learning_rate: 0.00005
   test_size: 0.2
   random_state: 2024
@@ -16,12 +16,12 @@ common:  # Các biến dùng chung cho tất cả subtasks và mô hình
 tasks:  # Cấu hình cho từng task
   ST1:  # Subtask 1
     hazard-category: 
-      wandb_run_name: "st1_hazard_category_large_v2"
+      wandb_run_name: "st1_hazard_category_large_v4"
       label_column: "hazard-category"
       pretrained_model_path: "models/ST1/hazard_category/st1_hazard_category_pretrained.pt"
       out_model_path: "models/ST1/hazard_category"
     product-category:
-      wandb_run_name: "st1_product_category_large_v2"
+      wandb_run_name: "st1_product_category_large_v4"
       label_column: "product-category"
       pretrained_model_path: "models/ST1/product_category/st1_product_category_pretrained.pt"
       out_model_path: "models/ST1/product_category"
